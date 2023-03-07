@@ -190,6 +190,8 @@ Recursion must have
   - Multiple base cases: The Fibonacci number sequence
   - Multiple recursive cases: the Collatz conjecture.
 
+Implement `atoi` in `stdlib.h`:  [techiedelight.com/implement-atoi-function-c-iterative-recursive](https://www.techiedelight.com/implement-atoi-function-c-iterative-recursive/)  
+
 ## Sort
 
 - Selection Sort：$O(n^2)$、$\Omega(n)$
@@ -199,4 +201,8 @@ Recursion must have
 Visualization:  https://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html 
 
 Video version: https://www.youtube.com/watch?v=ZZuD6iUe3Pc
+
+---
+
+# 4. Memory
 
