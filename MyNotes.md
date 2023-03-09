@@ -652,5 +652,9 @@ typedef struct node
 
 Visualization: https://www.cs.usfca.edu/~galles/visualization/Trie.html 
 
+---
+
+# 6.Python
+
 
 
