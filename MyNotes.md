@@ -656,5 +656,225 @@ Visualization: https://www.cs.usfca.edu/~galles/visualization/Trie.html
 
 # 6.Python
 
+## Hello
+
+```python
+print("hello, world")
+
+answer = input("What's your name? ")
+# print("hello, " + answer)
+print(f"hello, {answer}")
+```
+
+## Types
+
+- Data types in Python do not need to be explicitly declared. 
+
+- In Python, commonly used types include:
+
+  ```python
+  bool
+  float
+  int
+  str
+  ```
+
+  - Notice that `long` and `double` are missing. Python will handle what data type should be used for larger and smaller numbers.
+
+- Some other data types in Python include:
+
+  ```python
+  range      sequence of numbers
+  list       sequence of mutable values
+  tuple      sequence of immutable values
+  dict       collection of key-value pairs
+  set        collection of unique values
+  ```
+
+## Variables
+
+Python variables have two big differences from C:
+
+- No type specifier. 
+- Declared by initialization only.
+- C: `int counter = 1;`    Python: `counter = 1` 
+- Python favors `counter += 1` to increment by one, losing the ability found in C to type `counter++`.
+
+## Speller
+
+```python
+# Words in dictionary
+words = set()
 
 
+def check(word):
+    """Return true if word is in dictionary else false"""
+    if word.lower() in words:
+        return True
+    else:
+        return False
+
+
+def load(dictionary):
+    """Load dictionary into memory, returning true if successful else false"""
+    file = open(dictionary, "r")
+    for line in file:
+        word = line.rstrip()
+        words.add(word)
+    file.close()
+    return True
+
+def size():
+    """Returns number of words in dictionary if loaded else 0 if not yet loaded"""
+    return len(words)
+
+
+def unload():
+    """Unloads dictionary from memory, returning true if successful else false
+       unload() only needs to return True because Python handles memory management on its own.
+    """
+    return True
+```
+
+- Learn more about functions in the [Python documentation](https://docs.python.org/3/library/functions.html) 
+
+## Conditionals
+
+```python
+if x < y:
+    print("x is less than y")
+elif x > y:
+    print("x is greater than y")
+else:
+    print("x is equal to y")
+```
+
+- `letters_only = True if input().isalpha () else False` 
+
+## Loops
+
+```python
+# while loop
+i = 0
+while i < 3:
+    print("meow")
+    i += 1
+
+# for loop
+for i in range(3):
+    print("meow")
+```
+
+- Python does not have a `do while` loop.
+- The `in` preposition is essentially doing a linear search under the hood.
+
+## Other changes
+
+- `&&`、`||`、`!` are replaced by `and`、`or`、`not` 
+
+- Express multiple keywords:
+
+  ```python
+  if s.lower() in ["y", "yes"]:
+      print("Agreed.")
+  elif s.lower() in ["n", "no"]:
+      print("Not agreed.")
+  ```
+
+- Python arrays (more appropriately known as **lists** ) are not fixed in size; they can grow or shrink as needed.
+
+  - `nums = []`  `nums = [1,2,3,4]`  `nums = [x for x in range(50)]`
+  - `nums.append(5)`  `nums.insert(4, 5)`  `nums += [5]` 
+
+- **Tuples** are ordered, immutable sets of data.
+
+- `str` 
+
+  - Uppercase string all at once: `str.upper()` 
+
+- swap: `a, b = b, a` 
+
+## OOP
+
+- It’s possible to have certain types of values not only have properties or attributes inside of them but have *functions* as well. In Python, these values are known as **objects**
+
+- When a function belongs to a specific **object**, it is known as a **method**.
+
+- ```python
+  class Student():
+      def __init__(self, name, id):
+          self.name = name
+          self.id = id
+      
+      def changeID(self, id):
+          self.id = id
+          
+      def print(self):
+          pirnt(f"{self.name} - {self.id}")
+  ```
+
+- The [Python documentation](https://docs.python.org/) 
+
+## `sys`
+
+```python
+import sys
+
+if len(sys.argv) != 2:
+    print("Missing command-line argument")
+    sys.exit(1)
+
+print(f"hello, {sys.argv[1]}")
+sys.exit(0)
+```
+
+## CSV
+
+```python
+# Saves names and numbers to a CSV file using a DictWriter
+
+import csv
+
+# Get name and number
+name = input("Name: ")
+number = input("Number: ")
+
+# Open CSV file
+with open("phonebook.csv", "a") as file:
+
+    # Print to file
+    writer = csv.DictWriter(file, fieldnames=["name", "number"])
+    writer.writerow({"name": name, "number": number})
+```
+
+- Learn more about the CSV files in Python in the [Python documentation](https://docs.python.org/3/library/csv.html)
+
+## Third-party library
+
+Using a **third-party library**, Python can do text-to-speech.
+
+- ```python
+  # Says hello to someone
+  
+  import pyttsx3
+  
+  engine = pyttsx3.init()
+  name = input("What's your name? ")
+  engine.say(f"hello, {name}")
+  engine.runAndWait()
+  ```
+
+Also, a qrcode:
+
+- ```python
+  import os
+  import qrcode
+  
+  img = qrcode.make("https://youtu.be/xvFZjo5PgG0")
+  
+  img.save("qr.png", "PNG")
+  
+  os.system("open qr.png")
+  ```
+
+- 
