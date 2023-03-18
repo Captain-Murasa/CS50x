@@ -1,0 +1,30 @@
+UPDATE shows SET title = 'Adventure Time' where title LIKE 'Adventure Time';
+UPDATE shows SET title = 'Arrow' where title LIKE 'Arrow';
+UPDATE shows SET title = 'Avatar: The Last Airbender' where title LIKE 'Avatar: The Last Airbender';
+UPDATE shows SET title = 'Brooklyn Nine-Nine' where title LIKE 'Brooklyn Nine-Nine';
+UPDATE shows SET title = 'Community' where title LIKE 'Community';
+UPDATE shows SET title = 'Family Guy' where title LIKE 'Family Guy';
+UPDATE shows SET title = 'Friends' where title LIKE 'Friends';
+UPDATE shows SET title = 'Game of Thrones' where title LIKE 'Game of Thrones';
+UPDATE shows SET title = 'Gilmore Girls' where title LIKE 'Gilmore Girls';
+UPDATE shows SET title = 'Grey’s Anatomy' where title LIKE 'Grey’s Anatomy';
+UPDATE shows SET title = 'How I Met Your Mother' where title LIKE 'How I Met Your Mother';
+UPDATE shows SET title = 'It’s Always Sunny in Philadelphia' where title LIKE 'It’s Always Sunny in Philadelphia';
+UPDATE shows SET title = 'Parks and Recreation' where title LIKE 'Parks and Recreation';
+UPDATE shows SET title = 'Sherlock' where title LIKE 'Sherlock';
+UPDATE shows SET title = 'Squid Game' where title LIKE 'Squid Game';
+UPDATE shows SET title = 'The Bachelorette' where title LIKE 'The Bachelorette';
+UPDATE shows SET title = 'The Crown' where title LIKE 'The Crown';
+UPDATE shows SET title = 'The Office' where title LIKE 'The Office';
+UPDATE shows SET title = 'The Queen’s Gambit' where title LIKE 'The Queen’s Gambit';
+UPDATE shows SET title = 'The Untamed' where title LIKE 'The Untamed';
+
+UPDATE shows SET title = 'Brooklyn Nine-Nine' where title LIKE 'Brooklyn_99';
+UPDATE shows SET title = 'Game of Thrones' where title LIKE 'GoT';
+UPDATE shows SET title = 'Grey’s Anatomy' where title LIKE 'Grey’s%';
+UPDATE shows SET title = 'It’s Always Sunny in Philadelphia' where title LIKE '%Philadelphia';
+UPDATE shows SET title = 'Sherlock' where title LIKE 'Sherlock';
+UPDATE shows SET title = 'Parks and Recreation' where title LIKE 'Parks and Rec';
+UPDATE shows SET title = 'The Office' where title LIKE 'Office';
+
+SELECT * FROM shows ORDER BY title;

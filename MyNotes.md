@@ -2,11 +2,11 @@
 
 ## Computational Thinking
 
-计算机是一个**黑箱(black box）**，它接受一些输入，并产生一些输出。
+Computer likes a **black box**, which accepts some **input** and produces some **output**.
 
 ![Black box with input and output](https://cs50.harvard.edu/x/2023/notes/0/cs50Week0Slide38.png)
 
-编程语言的基本构成要素：
+Fundemental pieces of an program language:
 
 - functions
 
@@ -877,4 +877,274 @@ Also, a qrcode:
   os.system("open qr.png")
   ```
 
+---
+
+# 7. SQL
+
+## Flat-File Database
+
+- Data can often be described in patterns of *columns and tables*.
+
+- Spreadsheets like those created in Microsoft Excel and Google Sheets can be outputted to a `csv` or **comma-separated values** file.
+
+- `csv` file is flat in that all of our data is stored in a single table represented by a text file. We call this form of data a **flat-file database**.
+
+- ```python
+  # Stores favorite in a variable
+  
+  import csv
+  
+  # Open CSV file
+  with open("favorites.csv", "r") as file:
+  
+      # Create reader
+      reader = csv.reader(file)
+  
+      # Skip header row
+      next(reader)
+  
+      # Iterate over CSV file, printing each favorite
+      for row in reader:
+          favorite = row[1]
+          print(favorite)
+  ```
+
+- ```python
+  # Prints all favorites in CSV using csv.DictReader
+  
+  import csv
+  
+  # Open CSV file
+  with open("favorites.csv", "r") as file:
+  
+      # Create DictReader
+      reader = csv.DictReader(file)
+  
+      # Counts
+      counts = {}
+  
+      # Iterate over CSV file, counting favorites
+      for row in reader:
+          favorite = row["language"]
+          if favorite in counts:
+              counts[favorite] += 1
+          else:
+              counts[favorite] = 1
+  
+  # Print counts
+  for favorite in sorted(counts, key=lambda language: counts[language], reverse=True):
+      print(f"{favorite}: {counts[favorite]}")
+  ```
+
+## Relational Databases
+
+- **Relational databases** store data in rows and columns in structures called **tables**.
+
+- SQL allows for four types of commands:
+
+  ```sql
+    Create
+    Read
+    Update
+    Delete
+  ```
+
+  - These four operations are affectionately called *CRUD*.
+
+- We can create a SQL database at the terminal by typing `sqlite3 favorites.db`. 
+
+- We can put `sqlite3` into `csv` mode by typing `.mode csv`. Then, we can import our data from our `csv` file by typing `.import favorites.csv favorites`. 
+
+- We can type `.schema` to see the structure of the database.
+
+- You can read items from a table using the syntax `SELECT columns FROM table`.
+
+  - e.g. `SELECT * FROM favorites;` 
+
+- You can get a subset of the data using the command `SELECT language FROM favorites;`.
+
+- SQL supports many commands to access data, including:
+
+  ```SQL
+    AVG
+    COUNT
+    DISTINCT
+    LOWER
+    MAX
+    MIN
+    UPPER
+  ```
+
+- SQL offers additional commands we can utilize in our queries:
+
+  ```sql
+    WHERE       -- adding a Boolean expression to filter our data
+    LIKE        -- filtering responses more loosely
+    ORDER BY    -- ordering responses
+    LIMIT       -- limiting the number of responses
+    GROUP BY    -- grouping responses together
+  ```
+
+  - `SELECT language, COUNT(*) FROM favorites GROUP BY language ORDER BY COUNT(*);` 
+
+- We can also `INSERT` into a SQL database utilizing the form `INSERT INTO table (column...) VALUES(value, ...);`.
+
+  - `INSERT INTO favorites (language, problem) VALUES ('SQL', 'Fiftyville');`.
+
+- We can also utilize the `UPDATE` command to update your data.
+
+  - `UPDATE favorites SET language = 'C++' WHERE language = 'C';` 
+
+- `DELETE` allows you to delete parts of your data. 
+
+  - `DELETE FROM favorites WHERE problem = 'Tideman';`. 
+
+## IMDb
+
+- IMDb offers a database of people, shows, writers, starts, genres, and ratings. Each of these tables is related to one another as follows:
+
+![six boxes that represent various sql tables arrows are drawn to each showing their many relationships with one another](https://cs50.harvard.edu/x/2023/notes/7/cs50Week7Slide025.png)
+
+- The common field like `id` in `shows`  between all the fields is called a **key**.
+
+- **Primary keys** are used to identify a unique record in a table.  
+
+- **Foreign keys** are used to build relationships between tables by pointing to the primary key in another table.
+
 - 
+  In *sqlite*, we have five *datatypes*, including:
+
+  ```sqlite
+    BLOB       -- binary large objects that are groups of ones and zeros
+    INTEGER    -- an integer
+    NUMERIC    -- for numbers that are formatted specially like dates
+    REAL       -- like a float
+    TEXT       -- for strings and the like
+  ```
+
+- Additionally, columns can be set to add special constraints:
+
+  ```sqlite
+    NOT NULL
+    UNIQUE
+  ```
+
+- We can also use a **nested query**:
+
+  - ```sqlite
+    SELECT title
+    FROM shows
+    WHERE id IN (
+        SELECT show_id
+        FROM genres
+        WHERE genre = 'Comedy'
+    )
+    ORDER BY title 
+    LIMIT 10;
+    ```
+
+## JOINs
+
+- Tables could be joined together using the `JOIN` command.
+
+- ```sqlite
+  SELECT title 
+    FROM people
+    JOIN stars ON people.id = stars.person_id
+    JOIN shows ON stars.show_id = shows.id
+    WHERE name = `Steve Carell`;
+  ```
+
+- This is the same to the below:
+
+- ```sqlite
+  SELECT title 
+    FROM people, stars, shows
+    WHERE people.id = stars.person_id
+    AND stars.show_id = shows.id
+    AND name = 'Steve Carell';
+  ```
+
+- The wildcard `%` operator can be used to find all people whose names start with `Steve C` one could employ the syntax `SELECT * FROM people WHERE name LIKE 'Steve C%';`.
+
+## Indexes
+
+- Relational databases' data can be optimized within a table using **indexes**, which speed up our queries.
+- We can track the speed of our queries by executing `.timer on` in `sqlite3`.
+- We can create an index with the syntax `CREATE INDEX title_index on shows (title);`.
+  - This will create a data structure called a **B Tree**, unlike a binary tree, there can be more than two child notes.
+  - ![one node at the top from which come four children and below that there are three children coming from one of the nodes and two from another two from another and three from another](https://cs50.harvard.edu/x/2023/notes/7/cs50Week7Slide039.png)
+- Indexing all columns would result in utilizing more *storage space*. Therefore, there is a tradeoff for enhanced speed.
+
+## Using SQL in Python
+
+```python
+# Searches database popularity of a problem
+
+import csv
+
+from cs50 import SQL
+
+# Open database
+db = SQL("sqlite:///favorites.db")
+
+# Prompt user for favorite
+favorite = input("Favorite: ")
+
+# Search for title
+rows = db.execute("SELECT COUNT(*) FROM favorites WHERE problem LIKE ?", "%" + favorite + "%")
+
+# Get first (and only) row
+row = rows[0]
+
+# Print popularity
+print(row["COUNT(*)"])
+```
+
+- CS50 Library’s SQL functionality in the [documentation](https://cs50.readthedocs.io/libraries/cs50/python/#cs50.SQL).
+
+## Race Conditions
+
+- Utilization of SQL can sometimes result in some problems like **race condition problems**.
+- Built-in SQL features such as `BEGIN TRANSACTION`, `COMMIT`, and `ROLLBACK` help avoid some of these race condition problems.
+
+## SQL Injection Attacks
+
+- One of the problems that can arise in real-world applications of SQL is what is called an **injection attack**, where a malicious actor could input malicious SQL code.
+
+- ```python
+  rows = db.execute("SELECT COUNT(*) FROM favorites WHERE problem LIKE ?", "%" + favorite + "%")
+  ```
+
+  - Notice that because the `?` is in place, validation can be run on `favorite` before it is blindly accepted by the query.
+
+## Datebase Design
+
+- Each table should be a collection of a **single entity**. 
+
+  - For example, we should have a different table for each of **students**, **houses**, and **student-house assignments**.
+
+- Each piece of data should be stored in a **single location**, and thereafter referred to by its **ID** ("**primary key**").
+
+- ```sql
+  CREATE TABLE houses (
+      id INTEGER NOT NULL,
+      house TEXT NOT NULL,
+      head TEXT NOT NULL,
+      PRIMARY KEY(id)
+  );
+  ```
+
+- ```sql
+  -- Insert Data
+  INSERT INTO houses (house, head)
+  VALUES ('Gryffindor', 'McGonagall');
+  ```
+
+- [SQL Keywords Reference](https://www.w3schools.com/sql/sql_ref_keywords.asp) 
+
+- [sqlstyle.guide](https://www.sqlstyle.guide/) for pointers on good style in SQL.
+
+---
+
+# 8. HTML, CSS, JavaScript
